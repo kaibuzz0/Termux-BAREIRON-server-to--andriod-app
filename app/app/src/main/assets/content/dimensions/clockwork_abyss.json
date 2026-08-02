@@ -1,0 +1,22 @@
+{
+    "id": "dimension_clockwork_abyss",
+    "name": "Clockwork Abyss",
+    "type": "dimension",
+    "tier": "premium",
+    "version": "1.0",
+    "author": "Bareiron Team",
+    "description": "A mechanical hell of brass gears, steam vents, and rusted automata. The deeper you go, the more complex the machinery. Something ancient still ticks at the core.",
+    "thumbnail": "clockwork_thumb.png",
+    "mcVersion": "1.21.8",
+    "priceCents": 99,
+    "sku": "pack_dimension_clockwork",
+    "blockCount": 768,
+    "mobCount": 32,
+    "itemCount": 40,
+    "questCount": 22,
+    "structureCount": 18,
+    "biomes": ["brass_plains", "steam_geysers", "gearworks", "rust_pits"],
+    "features": ["mechanical_traps", "steam_damage", "automata_boss", "gear_puzzles"],
+    "tags": ["steampunk", "dimension", "premium", "puzzle"],
+    "rating": "T"
+}

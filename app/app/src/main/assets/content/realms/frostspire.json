@@ -1,0 +1,20 @@
+{
+    "id": "realm_frostspire",
+    "name": "Frostspire Peaks",
+    "type": "realm",
+    "tier": "free",
+    "version": "1.0",
+    "author": "Bareiron Team",
+    "description": "Jagged ice mountains with frozen waterfalls and hidden hot springs. Yeti clans war in the passes. Survive the cold.",
+    "thumbnail": "frostspire_thumb.png",
+    "mcVersion": "1.21.8",
+    "blockCount": 192,
+    "mobCount": 12,
+    "itemCount": 20,
+    "questCount": 8,
+    "structureCount": 6,
+    "biomes": ["ice_peaks", "frozen_waterfalls", "hot_springs", "yeti_passes"],
+    "features": ["cold_damage", "avalanche_events", "ice_crafting"],
+    "tags": ["winter", "free", "survival"],
+    "rating": "E"
+}

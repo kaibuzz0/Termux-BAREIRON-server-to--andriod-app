@@ -1,0 +1,22 @@
+{
+    "id": "city_goldport",
+    "name": "Goldport",
+    "type": "city",
+    "tier": "premium",
+    "version": "1.0",
+    "author": "Bareiron Team",
+    "description": "The richest trade city on the coast. Massive docks, a grand bazaar, noble villas, and a notorious thieves' guild beneath the streets.",
+    "thumbnail": "goldport_thumb.png",
+    "mcVersion": "1.21.8",
+    "priceCents": 99,
+    "sku": "pack_city_goldport",
+    "blockCount": 2048,
+    "mobCount": 48,
+    "itemCount": 96,
+    "questCount": 36,
+    "structureCount": 80,
+    "districts": ["docks", "bazaar", "noble_villas", "undercity", "temple_row"],
+    "features": ["trade_routes", "thieves_guild", "black_market", "arena_battles", "ship_combat"],
+    "tags": ["city", "trade", "premium", "story"],
+    "rating": "T"
+}

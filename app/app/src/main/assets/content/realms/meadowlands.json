@@ -1,0 +1,20 @@
+{
+    "id": "realm_meadowlands",
+    "name": "The Meadowlands",
+    "type": "realm",
+    "tier": "free",
+    "version": "1.0",
+    "author": "Bareiron Team",
+    "description": "Peaceful rolling hills, wildflower fields, and a gentle river. The starter realm. No bosses — just survival and exploration.",
+    "thumbnail": "meadowlands_thumb.png",
+    "mcVersion": "1.21.8",
+    "blockCount": 128,
+    "mobCount": 8,
+    "itemCount": 16,
+    "questCount": 5,
+    "structureCount": 4,
+    "biomes": ["rolling_hills", "flower_fields", "gentle_river"],
+    "features": ["peaceful_mode", "fishing_spots", "berry_bushes"],
+    "tags": ["starter", "peaceful", "free"],
+    "rating": "E"
+}

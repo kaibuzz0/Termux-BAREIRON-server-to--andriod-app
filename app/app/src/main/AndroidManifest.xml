@@ -29,6 +29,8 @@
         <activity android:name=".ContentManagerActivity" />
         <activity android:name=".RealmViewerActivity" />
         <activity android:name=".AddonBrowserActivity" />
+        <activity android:name=".StoreActivity" />
+        <activity android:name=".PackPreviewActivity" />
 
     </application>
 
