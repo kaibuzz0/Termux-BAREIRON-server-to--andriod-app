@@ -15,6 +15,10 @@
 #include "structures.h"
 #include "serialize.h"
 #include "procedures.h"
+#include "tls.h"
+
+// Defined in tools.c, set by main.c when -tls flag is passed
+extern int use_tls;
 
 int client_states[MAX_PLAYERS * 2];
 
@@ -202,11 +206,19 @@ void disconnectClient (int *client_fd, int cause) {
   setClientState(*client_fd, STATE_NONE);
   handlePlayerDisconnect(*client_fd);
   #ifdef _WIN32
-  closesocket(*client_fd);
-  printf("Disconnected client %d, cause: %d, errno: %d\n", *client_fd, cause, WSAGetLastError());
+    if (use_tls && tls_is_tls_fd(*client_fd)) {
+        tls_close(*client_fd);
+    } else {
+        closesocket(*client_fd);
+    }
+    printf("Disconnected client %d, cause: %d, errno: %d\n", *client_fd, cause, WSAGetLastError());
   #else
-  close(*client_fd);
-  printf("Disconnected client %d, cause: %d, errno: %d\n\n", *client_fd, cause, errno);
+    if (use_tls && tls_is_tls_fd(*client_fd)) {
+        tls_close(*client_fd);
+    } else {
+        close(*client_fd);
+    }
+    printf("Disconnected client %d, cause: %d, errno: %d\n\n", *client_fd, cause, errno);
   #endif
   *client_fd = -1;
 }
@@ -1341,7 +1353,7 @@ void handlePlayerUseItem (PlayerData *player, short x, short y, short z, uint8_t
   if (face == 255) return;
 
   // If the selected item doesn't correspond to a block, exit
-  uint8_t block = I_to_B(*item);
+  uint8_t block = I_to_B_func(*item);
   if (block == 0) return;
 
   switch (face) {

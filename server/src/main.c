@@ -40,6 +40,10 @@
 #include "procedures.h"
 #include "serialize.h"
 #include "zombie_game.h"
+#include "tls.h"
+
+// Global TLS flag — set to 1 when -tls command line argument is passed
+int use_tls = 0;
 
 /**
  * Routes an incoming packet to its packet handler or procedure.
@@ -497,7 +501,15 @@ void handlePacket (int client_fd, int length, int packet_id, int state) {
 
 }
 
-int main () {
+int main (int argc, char** argv) {
+  // Parse command line arguments
+  for (int i = 1; i < argc; i++) {
+    if (strcmp(argv[i], "-tls") == 0) {
+      use_tls = 1;
+      printf("[TLS] Enabled\n");
+    }
+  }
+
   #ifdef _WIN32 //initialize windows socket
     WSADATA wsa;
       if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
@@ -575,6 +587,15 @@ int main () {
   }
   printf("Server listening on port %d...\n", PORT);
 
+  // Initialize TLS if requested
+  if (use_tls) {
+    if (tls_init("cert.pem", "key.pem") != 0) {
+      fprintf(stderr, "TLS initialization failed\n");
+      close(server_fd);
+      exit(EXIT_FAILURE);
+    }
+  }
+
   // Make the socket non-blocking
   // This is necessary to not starve the idle task during slow connections
   #ifdef _WIN32
@@ -603,10 +624,22 @@ int main () {
     // Attempt to accept a new connection
     for (int i = 0; i < MAX_PLAYERS; i ++) {
       if (clients[i] != -1) continue;
-      clients[i] = accept(server_fd, (struct sockaddr *)&client_addr, &addr_len);
-      // If the accept was successful, make the client non-blocking too
-      if (clients[i] != -1) {
-        printf("New client, fd: %d\n", clients[i]);
+      int raw_fd = accept(server_fd, (struct sockaddr *)&client_addr, &addr_len);
+      // If the accept was successful, optionally wrap in TLS, make non-blocking
+      if (raw_fd != -1) {
+        if (use_tls) {
+          int tls_fd = tls_accept(raw_fd);
+          if (tls_fd < 0) {
+            printf("TLS accept failed for fd %d\n", raw_fd);
+            close(raw_fd);
+            continue;
+          }
+          clients[i] = tls_fd;
+          printf("New TLS client, fd: %d (raw: %d)\n", tls_fd, raw_fd);
+        } else {
+          clients[i] = raw_fd;
+          printf("New client, fd: %d\n", raw_fd);
+        }
       #ifdef _WIN32
         u_long mode = 1;
         ioctlsocket(clients[i], FIONBIO, &mode);

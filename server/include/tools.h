@@ -40,6 +40,12 @@ void readStringN (int client_fd, uint32_t max_length);
 uint32_t fast_rand ();
 uint64_t splitmix64 (uint64_t state);
 
+// TLS-aware network wrappers (active when -tls flag passed)
+extern int use_tls;
+ssize_t net_recv(int fd, void* buf, size_t len, int flags);
+ssize_t net_send(int fd, const void* buf, size_t len, int flags);
+void net_close(int* fd);
+
 #ifdef ESP_PLATFORM
   #include "esp_timer.h"
   #define get_program_time esp_timer_get_time
