@@ -55,13 +55,13 @@ public class MainMenuActivity extends AppCompatActivity {
     }
     
     private void startGame(boolean singlePlayer) {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("single_player", singlePlayer);
         if (singlePlayer) {
-            // Use localhost
-            intent.putExtra("server_ip", "127.0.0.1");
-            intent.putExtra("server_port", 25565);
+            // Launch the single-player startup flow
+            startActivity(new Intent(this, SinglePlayerLauncherActivity.class));
+        } else {
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra("single_player", false);
+            startActivity(intent);
         }
-        startActivity(intent);
     }
 }

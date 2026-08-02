@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
 
-        <!-- GAME -->
+        <!-- SINGLE PLAYER LAUNCHER -->
+        <activity android:name=".SinglePlayerLauncherActivity" />
         <activity
             android:name=".GameActivity"
             android:theme="@style/Theme.Bareiron.NoActionBar"
