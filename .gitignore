@@ -1,0 +1,39 @@
+# Build artifacts
+*.o
+*.a
+*.so
+*.exe
+bareiron
+!server/build.sh
+
+# Generated files
+server/src/registries.c
+server/include/registries.h
+server/notchian/
+server/notchian/server.jar
+
+# Android
+app/app/build/
+app/.gradle/
+app/local.properties
+app/*.iml
+app/.idea/
+app/captures/
+app/.externalNativeBuild/
+app/.cxx/
+app/*.apk
+app/*.aab
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
