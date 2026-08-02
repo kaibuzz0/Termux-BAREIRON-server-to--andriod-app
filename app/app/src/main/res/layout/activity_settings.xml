@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#121212"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⚙️ SETTINGS"
+        android:textColor="#888888"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:paddingBottom="24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Music Volume"
+        android:textColor="#CCCCCC"
+        android:textSize="14sp" />
+
+    <SeekBar
+        android:id="@+id/sbMusic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="70"
+        android:paddingBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SFX Volume"
+        android:textColor="#CCCCCC"
+        android:textSize="14sp" />
+
+    <SeekBar
+        android:id="@+id/sbSfx"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="80"
+        android:paddingBottom="16dp" />
+
+    <Switch
+        android:id="@+id/swNotifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Push Notifications"
+        android:textColor="#FFFFFF"
+        android:checked="true"
+        android:paddingVertical="8dp" />
+
+    <Switch
+        android:id="@+id/swVibration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vibration"
+        android:textColor="#FFFFFF"
+        android:checked="true"
+        android:paddingVertical="8dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#333333"
+        android:layout_marginVertical="16dp" />
+
+    <Button
+        android:id="@+id/btnClearData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🗑 CLEAR ALL DATA"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FF4444"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btnDevUnlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🔓 DEV: UNLOCK ALL PACKS"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#666666" />
+
+</LinearLayout>
