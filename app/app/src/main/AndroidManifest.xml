@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".BareironApp"
@@ -14,7 +17,6 @@
         android:theme="@style/Theme.Bareiron"
         android:usesCleartextTraffic="true">
 
-        <!-- MAIN MENU (Launcher) -->
         <activity
             android:name=".MainMenuActivity"
             android:exported="true"
@@ -25,27 +27,28 @@
             </intent-filter>
         </activity>
 
-        <!-- SINGLE PLAYER LAUNCHER -->
+        <service
+            android:name=".BareironServerService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="User-started local multiplayer game server that must remain reachable while the host app is backgrounded" />
+        </service>
+
+        <!-- Existing prototype client/content screens retained during migration. -->
         <activity android:name=".SinglePlayerLauncherActivity" />
         <activity
             android:name=".GameActivity"
             android:theme="@style/Theme.Bareiron.NoActionBar"
             android:screenOrientation="landscape" />
-
-        <!-- CONNECTIVITY -->
         <activity android:name=".ServerBrowserActivity" />
         <activity android:name=".ServerConnectActivity" />
-
-        <!-- SOCIAL -->
         <activity android:name=".FriendsActivity" />
         <activity android:name=".ProfileActivity" />
-
-        <!-- CONTENT -->
         <activity android:name=".ContentManagerActivity" />
         <activity android:name=".StoreActivity" />
         <activity android:name=".PackPreviewActivity" />
-
-        <!-- LEGACY -->
         <activity android:name=".MainActivity" />
         <activity android:name=".RealmViewerActivity" />
         <activity android:name=".AddonBrowserActivity" />

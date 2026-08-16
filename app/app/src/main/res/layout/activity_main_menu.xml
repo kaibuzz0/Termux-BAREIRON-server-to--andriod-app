@@ -1,104 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#121212"
-    android:gravity="center_horizontal"
-    android:padding="24dp">
+    android:background="#101414"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="🧟 BAREIRON"
-        android:textColor="#4CAF50"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:paddingTop="24dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Zombie Shooter"
-        android:textColor="#888888"
-        android:textSize="16sp"
-        android:paddingBottom="24dp" />
-
-    <TextView
-        android:id="@+id/tvPlayerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Player"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tvStats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Kills: 0 | Wave: 0 | Score: 0"
-        android:textColor="#888888"
-        android:textSize="14sp"
-        android:paddingBottom="32dp" />
-
-    <Button
-        android:id="@+id/btnSinglePlayer"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="🎮 SINGLE PLAYER"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#4CAF50"
-        android:textSize="16sp" />
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <Button
-        android:id="@+id/btnMultiplayer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="🌐 MULTIPLAYER"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#2196F3"
-        android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BAREIRON HOST"
+            android:textColor="#4CAF50"
+            android:textSize="32sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnFriends"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="👥 FRIENDS"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#9C27B0"
-        android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Pocket zombie-survival server"
+            android:textColor="#A9B3B3"
+            android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/btnProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="👤 PROFILE"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#FF9800"
-        android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="SERVER STATUS"
+            android:textColor="#7C8A8A"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnStore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="🛒 STORE"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#E91E63"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tvServerState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="STOPPED"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnSettings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="⚙️ SETTINGS"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#555555"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="127.0.0.1:25565"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvPlayers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Players: -- / 8"
+            android:textColor="#A9B3B3"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvRuntimeNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="#1B2323"
+            android:padding="16dp"
+            android:text="Tap START SERVER. No Termux or command line should be required in the finished app."
+            android:textColor="#D6DEDE"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btnStartServer"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="28dp"
+            android:backgroundTint="#2E7D32"
+            android:text="START SERVER"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnStopServer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#8B2D2D"
+            android:text="STOP SERVER"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnShareServer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#315A74"
+            android:text="SHARE JOIN ADDRESS"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#444C4C"
+            android:text="SERVER SETTINGS"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Free to host and play. Optional supporter features and respectful advertising can fund continued development later; server hosting stays local on this device."
+            android:textColor="#718080"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+</ScrollView>
