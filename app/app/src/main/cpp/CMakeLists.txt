@@ -28,6 +28,11 @@ string(REPLACE
     "return EXIT_FAILURE;"
     BAREIRON_MAIN_SOURCE
     "${BAREIRON_MAIN_SOURCE}")
+string(REPLACE
+    "  printf(\"Server closed.\\n\");\n\n}"
+    "  printf(\"Server closed.\\n\");\n  return EXIT_SUCCESS;\n\n}"
+    BAREIRON_MAIN_SOURCE
+    "${BAREIRON_MAIN_SOURCE}")
 set(BAREIRON_MAIN_SOURCE
     "extern volatile int bareiron_android_stop_requested;\n${BAREIRON_MAIN_SOURCE}")
 file(WRITE "${GENERATED_DIR}/main_android.c" "${BAREIRON_MAIN_SOURCE}")
