@@ -1,243 +1,105 @@
-# 🧟 BAREIRON — Full Game Client + Server
+# 🧟 BAREIRON — Android Server Host + Game Server
 
-A complete zombie shooter game: **Android app** that plays the game, connects to servers, chats with friends — plus a **micro C server** for hosting.
+This repository packages the existing **BAREIRON C game server** into a consumer-friendly Android host app.
 
-```
-    ╔═══════════════════════════════════════════════════════════════╗
-    ║                                                               ║
-    ║   🧟  BAREIRON — Play. Connect. Survive.                    ║
-    ║                                                               ║
-    ║   Android Game Client  ←→  Micro C Server                     ║
-    ║   Single Player | Multiplayer | Friends | Chat | Store      ║
-    ║                                                               ║
-    ╚═══════════════════════════════════════════════════════════════╝
-```
+The product goal is deliberately simple:
 
----
+1. Install the BAREIRON Host app on an Android device.
+2. Tap **START SERVER**.
+3. The embedded native BAREIRON server listens on port **25565**.
+4. Other compatible devices on the same network connect and play.
+5. The host does not need Termux, gcc, Java, shell commands, or a rented cloud server.
 
-## 📱 The App (What Players See)
-
-### Main Menu
-```
-┌─────────────────────────────┐
-│  🧟 BAREIRON                │
-│  Zombie Shooter             │
-│                             │
-│  Player                     │
-│  Kills: 42 | Wave: 5 | ...  │
-│                             │
-│  [🎮 SINGLE PLAYER]         │
-│  [🌐 MULTIPLAYER]          │
-│  [👥 FRIENDS]               │
-│  [👤 PROFILE]               │
-│  [🛒 STORE]                 │
-│  [⚙️ SETTINGS]               │
-└─────────────────────────────┘
-```
-
-### In-Game HUD
-```
-┌─────────────────────────────┐
-│ ❤️100  🔫30/90  🌊Wave 3  🏆1250│
-│                              │
-│      [ GAME VIEW ]           │
-│                              │
-│  SYSTEM: Wave 3 starting...  │
-│  ShadowHunter: Behind you!   │
-│  You: Got it                 │
-│  ┌──────────┐ [SEND]        │
-└─────────────────────────────┘
-```
-
-### Server Browser
-```
-┌─────────────────────────────┐
-│  🌐 SERVER BROWSER          │
-│                              │
-│  ⭐ Local Test              │
-│  127.0.0.1:25565            │
-│  2/20 players | 12ms       │
-│  [JOIN SERVER]               │
-│                              │
-│  Friend's Server            │
-│  192.168.1.100:25565        │
-│  5/8 players | 45ms          │
-│  [JOIN SERVER]               │
-│                              │
-│  [Direct Connect]            │
-└─────────────────────────────┘
-```
-
-### Friends
-```
-┌─────────────────────────────┐
-│  👥 FRIENDS (3/4 online)    │
-│                              │
-│  ● ShadowHunter              │
-│    In Game | [Join] [Invite]│
-│                              │
-│  ● NoobSlayer99              │
-│    In Lobby | [Invite]       │
-│                              │
-│  ○ PixelQueen                │
-│    Offline                   │
-│                              │
-│  [+ ADD FRIEND]              │
-└─────────────────────────────┘
-```
+The Android device is the server appliance.
 
 ---
 
-## 🖥️ The Server (What Hosts Run)
+## Current Architecture
 
-**Micro C binary (~227KB)** that runs on anything:
-- Old Android phones via Termux
-- Raspberry Pi
-- VPS / cloud server
-- Your laptop
-
-### Host a Server
-```bash
-cd server
-bash install.sh       # One-time setup
-./quickstart.sh       # Run
+```text
+Google Play / APK
+      |
+      v
+Android BAREIRON Host dashboard
+      |
+      v
+Foreground host service
+      |
+      v
+JNI bridge
+      |
+      v
+Android NDK shared library
+      |
+      v
+Existing BAREIRON C server
+      |
+      v
+TCP port 25565
+      |
+      +--> game clients on the local network
 ```
 
-### Players Connect
-1. Open Android app
-2. Tap **MULTIPLAYER**
-3. See your server in the list (or enter IP directly)
-4. Tap **JOIN**
-5. Play together
+The standalone server remains in `server/` and can still be built separately. The Android build reuses that C source through CMake/NDK rather than extracting and executing a downloaded binary.
 
 ---
 
-## 📁 Repository Layout
+## Android Host Milestone
 
-```
-Termux-BAREIRON-server-to--andriod-app/
-│
-├── server/                    # 🖥️ Micro C Server
-│   ├── src/                   # 16 C source files
-│   ├── include/               # Headers
-│   ├── build.sh               # Compile
-│   ├── install.sh             # Termux setup
-│   ├── quickstart.sh          # Run
-│   └── README.md
-│
-├── app/                       # 📱 Android Game Client
-│   ├── app/src/main/
-│   │   ├── java/com/bareiron/game/
-│   │   │   ├── MainMenuActivity.java      # Launcher
-│   │   │   ├── GameActivity.java           # In-game HUD + chat
-│   │   │   ├── ServerBrowserActivity.java  # Find + join servers
-│   │   │   ├── FriendsActivity.java        # Friend list + invites
-│   │   │   ├── ProfileActivity.java        # Stats + achievements
-│   │   │   ├── StoreActivity.java          # Free / unlockable / $0.99
-│   │   │   ├── SettingsActivity.java       # Audio, controls, dev tools
-│   │   │   ├── ContentPackManager.java     # Load content packs
-│   │   │   ├── PlayerProgress.java         # Track kills, waves, score
-│   │   │   └── BillingManager.java         # Purchases
-│   │   ├── res/layout/        # All screens
-│   │   └── assets/content/    # JSON content packs
-│   ├── build.gradle
-│   └── README.md
-│
-└── README.md                  # ← This file
-```
+The Android host currently contains:
+
+- one-button **Start Server / Stop Server** controls
+- LAN IPv4 address + port display
+- shareable join address
+- Android foreground-service lifecycle
+- JNI `run / stop / status / player-count` bridge
+- NDK/CMake build of the existing BAREIRON C server
+- app-private working directory for BAREIRON save data
+- live dashboard polling for server status and connected-player count
+
+The first Android native build intentionally uses BAREIRON's plain LAN transport. The existing OpenSSL TLS implementation remains available to standalone builds; Android TLS packaging is a later hardening milestone.
 
 ---
 
-## 🎮 How to Play
+## Server
 
-### Single Player (No Server Needed)
-1. Open app
-2. Tap **SINGLE PLAYER**
-3. App loads content packs
-4. Play zombie survival
+The BAREIRON server is a memory-first Minecraft Java protocol server fork expanded into a zombie survival game. Server-side systems include zombie waves, bosses, weapons, NPCs, villages, quests, crafting, teams, trading, persistence, and related gameplay systems.
 
-### Multiplayer (You + Friends)
-**Host:**
-1. Install Termux on Android (or any Linux)
-2. `git clone` this repo
-3. `cd server && bash install.sh && ./quickstart.sh`
-4. Tell friends your IP
+The Android app does **not** replace that server. It is the appliance/control layer around it.
 
-**Friends:**
-1. Open app
-2. Tap **MULTIPLAYER**
-3. Enter host's IP:port
-4. Tap **DIRECT CONNECT**
-5. Or find it in the browser if it's public
+### Standalone server build
 
-### With Friends in the App
-1. Tap **FRIENDS**
-2. Add friends by username
-3. See who's online/playing
-4. Tap **Join** to hop into their game
-5. Or **Invite** them to yours
-
----
-
-## 🛒 Content Store
-
-| Tier | How | Price |
-|------|-----|-------|
-| **FREE** | Always available | $0 |
-| **UNLOCKABLE** | Earn by playing (kills, waves, bosses) | $0 |
-| **PREMIUM** | One-time purchase | **$0.99** |
-
-**Every pack is fully loaded** — no streaming, no waiting. Buy once, own forever.
-
-### Example Packs
-- **Meadowlands** (FREE) — Peaceful starter realm
-- **Crimson Wastes** (UNLOCKABLE — 100 zombie kills) — Desert with pharaoh boss
-- **Goldport** (PREMIUM — $0.99) — Massive trade city with thieves guild
-
----
-
-## 💬 Chat System
-
-In-game chat is always visible:
-- **System messages** — wave starts, boss alerts
-- **Player chat** — talk with everyone in the server
-- **Friend invites** — join directly from chat
-- **Quick messages** — preset responses (tap to send)
-
----
-
-## 🔧 Development
-
-### Build Server
 ```bash
 cd server
 bash build.sh
 ```
 
-### Build Android App
+### Android app build
+
 ```bash
 cd app
-bash build.sh
-# Or open in Android Studio
+./gradlew assembleDebug
 ```
 
-### Add Content Pack
-1. Create JSON in `app/app/src/main/assets/content/<type>/`
-2. Define tier: free / unlockable / premium
-3. Set unlock condition (for unlockables) or price (for premium)
-4. Rebuild APK
+The Android build requires the Android NDK and CMake versions declared in `app/app/build.gradle`.
 
 ---
 
-## 🚀 Future Features
-- [ ] In-app Minecraft renderer (play without separate client)
-- [ ] Voice chat
-- [ ] Clan/guild system
-- [ ] Ranked leaderboards
-- [ ] Seasonal events
-- [ ] Cross-platform (iOS)
-- [ ] Cloud save sync
+## Product Direction
+
+The intended free product is a small local BAREIRON server anyone can run from an Android device without technical setup. Future product work can add restrained advertising in the host-management experience and an optional supporter/development subscription without ad-bombing players or requiring the project owner to centrally host everyone's game servers.
+
+Immediate engineering priorities are:
+
+- prove a real second device can join the Android-hosted server
+- validate start/stop/restart repeatedly on physical Android hardware
+- harden save-file lifecycle and crash recovery
+- improve server configuration and player/admin controls
+- add compatibility/status diagnostics for non-technical users
+- prepare Play Store policy, signing, billing, and ads only after hosting is reliable
 
 ---
 
-**🧟 Download. Survive. Connect.**
+## Credits
+
+BAREIRON is based on the upstream memory-first server project and the expanded BAREIRON zombie-survival server work contained in this repository.
