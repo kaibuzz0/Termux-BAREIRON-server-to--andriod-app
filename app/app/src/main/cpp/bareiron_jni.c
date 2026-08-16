@@ -1,6 +1,5 @@
 #include <jni.h>
 #include <unistd.h>
-#include <string.h>
 #include "globals.h"
 
 extern int bareiron_android_server_main(int argc, char** argv);
@@ -57,4 +56,11 @@ Java_com_bareiron_game_NativeBareiron_nativeIsRunning(JNIEnv* env, jclass clazz)
     (void)env;
     (void)clazz;
     return bareiron_android_running ? JNI_TRUE : JNI_FALSE;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_bareiron_game_NativeBareiron_nativePlayerCount(JNIEnv* env, jclass clazz) {
+    (void)env;
+    (void)clazz;
+    return client_count;
 }
