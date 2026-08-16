@@ -21,7 +21,12 @@ public final class NativeBareiron {
         return nativeIsRunning();
     }
 
+    public static int getPlayerCount() {
+        return nativePlayerCount();
+    }
+
     private static native int nativeRun(String dataDirectory);
     private static native void nativeRequestStop();
     private static native boolean nativeIsRunning();
+    private static native int nativePlayerCount();
 }
