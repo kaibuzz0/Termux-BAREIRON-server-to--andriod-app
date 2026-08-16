@@ -11,48 +11,83 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
-/**
- * Long-running host-service shell for the local BAREIRON server.
- *
- * Milestone 1 establishes Android lifecycle ownership and a user-visible foreground
- * service. The native BAREIRON runtime will be attached here in the next milestone.
- */
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/** Owns the embedded BAREIRON native server while the user is hosting. */
 public class BareironServerService extends Service {
     public static final String ACTION_START = "com.bareiron.game.START_SERVER";
     public static final String ACTION_STOP = "com.bareiron.game.STOP_SERVER";
 
     private static final String CHANNEL_ID = "bareiron_server";
     private static final int NOTIFICATION_ID = 25565;
-    private static volatile boolean running = false;
+    private static volatile boolean startRequested = false;
+    private static volatile int lastExitCode = 0;
+
+    private ExecutorService serverExecutor;
 
     public static boolean isRunning() {
-        return running;
+        return startRequested || NativeBareiron.isRunning();
+    }
+
+    public static int getPlayerCount() {
+        return NativeBareiron.isRunning() ? NativeBareiron.getPlayerCount() : 0;
+    }
+
+    public static int getLastExitCode() {
+        return lastExitCode;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
+        serverExecutor = Executors.newSingleThreadExecutor();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = intent == null ? ACTION_START : intent.getAction();
+
         if (ACTION_STOP.equals(action)) {
-            running = false;
-            stopForeground(true);
-            stopSelf();
+            startRequested = false;
+            NativeBareiron.requestStop();
             return START_NOT_STICKY;
         }
 
-        running = true;
-        startForeground(NOTIFICATION_ID, buildNotification());
+        if (isRunning()) {
+            return START_STICKY;
+        }
+
+        startRequested = true;
+        startForeground(NOTIFICATION_ID, buildNotification("Starting local server…"));
+
+        serverExecutor.execute(() -> {
+            int result;
+            try {
+                result = NativeBareiron.run(getFilesDir().getAbsolutePath());
+            } catch (Throwable t) {
+                result = -100;
+            }
+
+            lastExitCode = result;
+            startRequested = false;
+            stopForeground(true);
+            stopSelf();
+        });
+
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        running = false;
+        startRequested = false;
+        if (NativeBareiron.isRunning()) {
+            NativeBareiron.requestStop();
+        }
+        if (serverExecutor != null) {
+            serverExecutor.shutdown();
+        }
         super.onDestroy();
     }
 
@@ -73,7 +108,7 @@ public class BareironServerService extends Service {
         }
     }
 
-    private Notification buildNotification() {
+    private Notification buildNotification(String text) {
         Intent openApp = new Intent(this, MainMenuActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
             this,
@@ -92,8 +127,8 @@ public class BareironServerService extends Service {
 
         return new NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("BAREIRON server running")
-            .setContentText("Local game server host is active")
+            .setContentTitle("BAREIRON server")
+            .setContentText(text)
             .setContentIntent(pendingIntent)
             .setOngoing(true)
             .addAction(0, "Stop server", stopPendingIntent)
