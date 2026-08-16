@@ -2,6 +2,8 @@ package com.bareiron.game;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,15 +13,17 @@ import java.net.Inet4Address;
 import java.net.NetworkInterface;
 import java.util.Collections;
 
-/**
- * Primary product screen: a simple appliance-style dashboard for hosting BAREIRON.
- *
- * The old game-client activities remain in the project while the product is migrated,
- * but the launcher now reflects the actual goal: this Android device hosts the server
- * and other devices connect to it.
- */
+/** Appliance-style dashboard for hosting the embedded BAREIRON server. */
 public class MainMenuActivity extends AppCompatActivity {
     private static final int DEFAULT_PORT = 25565;
+
+    private final Handler dashboardHandler = new Handler(Looper.getMainLooper());
+    private final Runnable dashboardTicker = new Runnable() {
+        @Override public void run() {
+            refreshDashboard();
+            dashboardHandler.postDelayed(this, 1000);
+        }
+    };
 
     private TextView tvServerState;
     private TextView tvAddress;
@@ -46,14 +50,18 @@ public class MainMenuActivity extends AppCompatActivity {
         btnStopServer.setOnClickListener(v -> stopServer());
         btnShare.setOnClickListener(v -> shareServer());
         btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
-
-        refreshDashboard();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        refreshDashboard();
+        dashboardHandler.post(dashboardTicker);
+    }
+
+    @Override
+    protected void onPause() {
+        dashboardHandler.removeCallbacks(dashboardTicker);
+        super.onPause();
     }
 
     private void startServer() {
@@ -83,10 +91,17 @@ public class MainMenuActivity extends AppCompatActivity {
         boolean running = BareironServerService.isRunning();
         tvServerState.setText(running ? "RUNNING" : "STOPPED");
         tvAddress.setText(getLanAddress() + ":" + DEFAULT_PORT);
-        tvPlayers.setText("Players: -- / 8");
-        tvRuntimeNote.setText(running
-            ? "Server host service is active. Native BAREIRON runtime bridge is the next milestone."
-            : "Tap START SERVER. No Termux or command line should be required in the finished app.");
+        tvPlayers.setText("Players: " + BareironServerService.getPlayerCount() + " / 8");
+
+        if (running) {
+            tvRuntimeNote.setText("Native BAREIRON is hosted on this device. Keep this device on the same network as the players.");
+        } else {
+            int exitCode = BareironServerService.getLastExitCode();
+            tvRuntimeNote.setText(exitCode == 0
+                ? "Tap START SERVER. Other devices on this network can join at the address above."
+                : "Server stopped with native exit code " + exitCode + ". Check CI/runtime diagnostics before release.");
+        }
+
         btnStartServer.setEnabled(!running);
         btnStopServer.setEnabled(running);
     }
