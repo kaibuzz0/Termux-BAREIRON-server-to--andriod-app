@@ -29,6 +29,11 @@ string(REPLACE
     BAREIRON_MAIN_SOURCE
     "${BAREIRON_MAIN_SOURCE}")
 string(REPLACE
+    "  close(server_fd);"
+    "  for (int android_i = 0; android_i < MAX_PLAYERS; android_i++) {\n    if (clients[android_i] != -1) {\n      close(clients[android_i]);\n      clients[android_i] = -1;\n    }\n  }\n  close(server_fd);"
+    BAREIRON_MAIN_SOURCE
+    "${BAREIRON_MAIN_SOURCE}")
+string(REPLACE
     "  printf(\"Server closed.\\n\");\n\n}"
     "  printf(\"Server closed.\\n\");\n  return EXIT_SUCCESS;\n\n}"
     BAREIRON_MAIN_SOURCE
