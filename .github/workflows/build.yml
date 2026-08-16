@@ -74,7 +74,7 @@ jobs:
         working-directory: server
         run: |
           set -o pipefail
-          cosmocc src/*.c -O2 -Iinclude -o bareiron -lssl -lcrypto 2>&1 | tee ../diagnostics/server-build.log
+          cosmocc src/*.c -O2 -Iinclude -o bareiron -lm -lssl -lcrypto 2>&1 | tee ../diagnostics/server-build.log
 
       - name: Verify server artifact
         if: success()
@@ -117,7 +117,7 @@ jobs:
 
   build-android:
     runs-on: ubuntu-24.04
-    name: Android | assembleDebug + diagnostics
+    name: Android | NDK + assembleDebug + diagnostics
 
     steps:
       - name: Checkout repository
@@ -138,6 +138,11 @@ jobs:
         with:
           api-level: 34
           build-tools: 34.0.0
+
+      - name: Install Android NDK and CMake
+        run: |
+          set -o pipefail
+          yes | sdkmanager "ndk;26.3.11579264" "cmake;3.22.1" 2>&1 | tee diagnostics/android-native-toolchain.log
 
       - name: Grant execute permissions
         working-directory: app
@@ -166,6 +171,13 @@ jobs:
           fi
           ls -lh "${apks[@]}" | tee diagnostics/android-artifacts.txt
 
+      - name: Verify native BAREIRON libraries
+        if: success()
+        run: |
+          set -euo pipefail
+          find app/app/build -type f -name 'libbareiron_android.so' -print | tee diagnostics/native-libraries.txt
+          test -s diagnostics/native-libraries.txt
+
       - name: Android build summary
         if: always()
         run: |
@@ -176,7 +188,7 @@ jobs:
             echo "- Commit: \`${{ github.sha }}\`"
             echo "- Diagnostic artifact: \`android-ci-diagnostics-${{ github.run_id }}\`"
             echo
-            echo "The Gradle log includes stack traces and warnings so the failing task and cause are visible directly in CI."
+            echo "The Gradle log includes CMake/NDK compiler output, stack traces, and warnings so native failures identify the exact source file and line."
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload Android diagnostics
@@ -188,6 +200,8 @@ jobs:
             diagnostics/
             app/**/build/reports/
             app/**/build/test-results/
+            app/**/.cxx/**/build.ninja
+            app/**/.cxx/**/CMakeCache.txt
           if-no-files-found: warn
           retention-days: 14
 
@@ -227,14 +241,14 @@ jobs:
           tag_name: latest
           name: BAREIRON Latest Build
           body: |
-            Rolling release of BAREIRON Server + Android Content Manager.
+            Rolling release of the BAREIRON server and Android host app.
 
-            This release is published only after both the server and Android build jobs pass.
+            This release is published only after both the standalone server and Android native-host builds pass.
 
             | File | Description |
             |------|-------------|
-            | `bareiron` | Server binary (Cosmopolitan, runs on Linux/Windows/Mac) |
-            | `app-debug.apk` | Android Content Manager APK |
+            | `bareiron` | Standalone server binary |
+            | `app-debug.apk` | Android BAREIRON Host APK with embedded native server |
           files: ./artifacts/*
           prerelease: true
         env:
