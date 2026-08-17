@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-17T00:00:25Z",
+  "source_commit": "d869f5a44d87eae71615dcac7281d385119f6c64",
+  "repo": {
+    "id": "termux-bareiron-server-to--andriod-app",
+    "full_name": "kaibuzz0/Termux-BAREIRON-server-to--andriod-app",
+    "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app",
+    "default_branch": "main"
+  },
+  "stats": {
+    "tracked_files": 121,
+    "python_files": 1,
+    "javascript_typescript_files": 1,
+    "workflow_files": 2,
+    "test_files": 1
+  },
+  "tools": [],
+  "toolsets": [],
+  "cases": [],
+  "opportunities": [],
+  "intelligence": [],
+  "sources": [],
+  "prompts": [],
+  "evidence": [],
+  "agent_ops": {},
+  "activity": [
+    {
+      "id": "d869f5a44d87eae71615dcac7281d385119f6c64",
+      "type": "commit",
+      "title": "Connect repository to GitHub Command Site",
+      "timestamp": "2026-08-16T19:00:18-05:00",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/commit/d869f5a44d87eae71615dcac7281d385119f6c64"
+    },
+    {
+      "id": "7a6561a85b78252d25c3522704cb116fe3f48a10",
+      "type": "commit",
+      "title": "Merge pull request #1 from kaibuzz0/agent/ci-actionable-diagnostics",
+      "timestamp": "2026-08-16T12:22:11-05:00",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/commit/7a6561a85b78252d25c3522704cb116fe3f48a10"
+    },
+    {
+      "id": "db89e01e5b4a2cf91f3f662fc212228f079a0c95",
+      "type": "commit",
+      "title": "fix: close Android client sockets on stop",
+      "timestamp": "2026-08-16T07:31:21-05:00",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/commit/db89e01e5b4a2cf91f3f662fc212228f079a0c95"
+    },
+    {
+      "id": "d5b6e64bfe7156271214e3d3c4c167c427d75556",
+      "type": "commit",
+      "title": "chore: align docs with native milestone",
+      "timestamp": "2026-08-16T07:30:56-05:00",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/commit/d5b6e64bfe7156271214e3d3c4c167c427d75556"
+    },
+    {
+      "id": "ba5dadb2c290126d39379342aeb37b1e00793465",
+      "type": "commit",
+      "title": "chore: preserve host docs",
+      "timestamp": "2026-08-16T07:30:35-05:00",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/commit/ba5dadb2c290126d39379342aeb37b1e00793465"
+    },
+    {
+      "id": "8223dcc195c3b8b6ef52cc79631a7dba5452bcbc",
+      "type": "commit",
+      "title": "chore: no-op",
+      "timestamp": "2026-08-16T07:30:25-05:00",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/commit/8223dcc195c3b8b6ef52cc79631a7dba5452bcbc"
+    },
+    {
+      "id": "a933365b1b42f6848ba85361da1a31809d43f19b",
+      "type": "commit",
+      "title": "chore: finalize native host service",
+      "timestamp": "2026-08-16T07:30:14-05:00",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/commit/a933365b1b42f6848ba85361da1a31809d43f19b"
+    },
+    {
+      "id": "a0552314d7102dd0a2d9952935b6dabc98bf260b",
+      "type": "commit",
+      "title": "chore: keep native host service source stable",
+      "timestamp": "2026-08-16T07:30:01-05:00",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/commit/a0552314d7102dd0a2d9952935b6dabc98bf260b"
+    },
+    {
+      "id": "a8a6d24a232573adcb95b7348fabff35e1b86cca",
+      "type": "commit",
+      "title": "fix: update host notification after native start",
+      "timestamp": "2026-08-16T07:29:41-05:00",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/commit/a8a6d24a232573adcb95b7348fabff35e1b86cca"
+    },
+    {
+      "id": "e453143338615ed4244769b6e0b6f356b7811bcc",
+      "type": "commit",
+      "title": "fix: keep Android runtime failures inside app",
+      "timestamp": "2026-08-16T07:29:29-05:00",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/commit/e453143338615ed4244769b6e0b6f356b7811bcc"
+    }
+  ],
+  "links": [
+    {
+      "id": "github",
+      "name": "GitHub repository",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app"
+    },
+    {
+      "id": "actions",
+      "name": "GitHub Actions",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/actions"
+    },
+    {
+      "id": "issues",
+      "name": "Issues",
+      "url": "https://github.com/kaibuzz0/Termux-BAREIRON-server-to--andriod-app/issues"
+    }
+  ]
+}
